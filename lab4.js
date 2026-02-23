@@ -1,4 +1,4 @@
-// lab3.js
+// lab4.js
 
 // =======================
 // EJERCICIO 1
@@ -281,3 +281,5 @@ GestorPartidas.prototype.filtrarPorDificultad = function (dificultad) {
 
     document.getElementById("resultado-ej6").textContent = salida;
 })();
+
+

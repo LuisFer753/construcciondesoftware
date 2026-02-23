@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Luis Fernando</title>
+    <link rel="stylesheet" href="lab5.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen">
+    <header class="bg-black/50 backdrop-blur-md shadow-2xl p-8 text-center">
+        <h1 class="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Luis Fernando Tena Ortega</h1>
+        <p class="text-xl mb-6"><strong>Matrícula:</strong> A01708712 | <strong>Correo:</strong> a01708712@tec.mx</p>
+        <nav class="flex justify-center space-x-8">
+            <ul>
+                <li><a href="#preguntas-js" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Preguntas js</a></li>
+                <li><a href="#tienda" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Tienda</a></li>
+                <li><a href="#js-ejercicios" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Ejercicios js</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-8 max-w-6xl">
+        <section id="tienda" class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
+            <h2 class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">🛒 Tiendita</h2>
+            <p class="text-center text-lg mb-8 opacity-90">¡Las mejores cosas que verás jamás! IVA 16% MXN</p>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Producto 1: Pulparindots -->
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-8 rounded-2xl hover:scale-105 transition-all duration-300 border border-gray-700">
+                    <img src="https://tiendadelarosa.com/cdn/shop/products/Disenosintitulo-2021-05-21T104115.460_900x.png?v=1621611777" alt="Pulparindots" class="w-full h-38 object-cover rounded-xl mb-4">
+                    <h3 class="text-2xl font-bold mb-2">Pulparindots</h3>
+                    <p class="text-green-400 text-xl mb-4 font-bold">$10 MXN</p>
+                    <label class="block mb-4 text-sm opacity-80" id="label-pulparindots">Cantidad (1-10):</label>
+                    <input type="number" id="cant-pulparindots" min="1" max="10" value="1" class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl text-center text-lg focus:outline-none focus:ring-4 ring-blue-500 transition-all">
+                    <div id="ayuda-pulparindots" class="mt-2 p-3 bg-blue-500/20 border border-blue-500 rounded-xl text-sm hidden">✅ Máx. 10 unidades. Envío gratis >5u</div>
+                </div>
+
+                <!-- Producto 2: Violín Peruano -->
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-8 rounded-2xl hover:scale-105 transition-all duration-300 border border-gray-700">
+                    <img src="https://vanessa-mae.com.ar/wp-content/uploads/que-es-violin-en-peru.webp" alt="ViolinPeruano" class="w-full h-38 object-cover rounded-xl mb-4">
+                    <h3 class="text-2xl font-bold mb-2">Violin peruano</h3>
+                    <p class="text-green-400 text-xl mb-4 font-bold">$1,499 MXN <span class="text-yellow-400">20% OFF</span></p>
+                    <label class="block mb-4 text-sm opacity-80" id="label-violin">Cantidad (1-2):</label>
+                    <input type="number" id="cant-violin" min="1" max="2" value="1" class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl text-center text-lg focus:outline-none focus:ring-4 ring-emerald-500 transition-all">
+                    <div id="ayuda-violin" class="mt-2 p-3 bg-emerald-500/20 border border-emerald-500 rounded-xl text-sm hidden">🎧 Cancelación ruido activa. Batería 40h</div>
+                </div>
+
+                <!-- Producto 3: Peluche de Dodo -->
+                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-8 rounded-2xl hover:scale-105 transition-all duration-300 border border-gray-700">
+                    <img src="https://i.ebayimg.com/images/g/MEQAAOSwOVhlswvm/s-l1200.jpg" alt="Dodo" class="w-full h-38 object-cover rounded-xl mb-4">
+                    <h3 class="text-2xl font-bold mb-2">Peluche de Dodo Original</h3>
+                    <p class="text-green-400 text-xl mb-4 font-bold">$200,199 MXN</p>
+                    <label class="block mb-4 text-sm opacity-80" id="label-dodo">Cantidad (1-8):</label>
+                    <input type="number" id="cant-dodo" min="1" max="8" value="1" class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl text-center text-lg focus:outline-none focus:ring-4 ring-purple-500 transition-all">
+                    <div id="ayuda-dodo" class="mt-2 p-3 bg-purple-500/20 border border-purple-500 rounded-xl text-sm hidden">⌨️ Switches Cherry MX. RGB personalizable</div>
+                </div>
+            </div>
+
+            <div class="bg-black/30 p-8 rounded-2xl text-center">
+                <button id="calcular-total" class="bg-gradient-to-r from-blue-500 to-purple-500 px-12 py-4 text-xl font-bold rounded-full hover:scale-105 transition-all duration-300 shadow-2xl mb-8">🧮 Calcular Total</button>
+                <div id="resumen-compra" class="text-2xl space-y-2 hidden">
+                    <p><strong>Subtotal:</strong> <span id="subtotal">$0</span></p>
+                    <p><strong>IVA (16%):</strong> <span id="iva">$0</span></p>
+                    <p class="text-3xl font-bold text-green-400"><strong>Total:</strong> <span id="total">$0</span></p>
+                    <p class="text-sm opacity-75 mt-4">¡Gracias por tu compra! Envío gratis en Querétaro 🚀</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="preguntas-js" class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12" id="titulo-preguntas">Preguntas JS</h2>
+
+            <article class="bg-gray-900/50 border border-gray-700 rounded-2xl p-8 mb-8 hover:bg-gray-800/50 transition-all">
+                <h3 class="text-2xl font-bold mb-4" id="preg1-titulo">1. ¿Por qué es buena práctica usar JavaScript para validar inputs antes de enviar al servidor?</h3>
+                <p class="leading-relaxed" id="preg1-resp">
+                    Mejora la UX dando feedback inmediato sin recargas, reduce tráfico innecesario al servidor (ahorra ancho de banda y CPU), y permite validaciones complejas en cliente. Aunque no es 100% seguro, es eficiente para el 95% de casos normales.
+                </p>
+            </article>
+
+            <article class="bg-gray-900/50 border border-gray-700 rounded-2xl p-8 mb-8 hover:bg-gray-800/50 transition-all">
+                <h3 class="text-2xl font-bold mb-4" id="preg2-titulo">2. ¿Cómo saltarte las validaciones de JavaScript?</h3>
+                <p class="leading-relaxed" id="preg2-resp">
+                    Deshabilitar JS en navegador, usar DevTools para modificar DOM/valores, o enviar POST directo via curl/Postman burpando el request. JS solo valida cliente-side.
+                </p>
+            </article>
+
+            <article class="bg-gray-900/50 border border-gray-700 rounded-2xl p-8 hover:bg-gray-800/50 transition-all">
+                <h3 class="text-2xl font-bold mb-4" id="preg3-titulo">3. Si se puede saltar, ¿por qué usarlo?</h3>
+                <p class="leading-relaxed" id="preg3-resp">
+                    UX superior (feedback instantáneo), menor carga servidor (solo datos válidos llegan), y capa defensa múltiple: JS=UX+optimización, servidor=seguridad obligatoria. Como en tus proyectos CUDA: optimiza cliente, valida server.
+                </p>
+            </article>
+        </section>
+
+        <!-- NUEVA SECCIÓN PARA LOS EJERCICIOS DE JS -->
+        <section id="js-ejercicios">
+            <h2>Ejercicios de JavaScript</h2>
+
+            <div>
+                <button id="btn-ej1">Ejercicio 1: Tabla de cuadrados y cubos</button>
+            </div>
+            <div>
+                <button id="btn-ej2">Ejercicio 2: Suma aleatoria y tiempo</button>
+            </div>
+
+            <div id="resultado-ej1"></div>
+            <div id="resultado-ej2"></div>
+
+            <h3>Resultados de ejercicios 3, 4, 5</h3>
+            <pre id="resultado-ej345"></pre>
+
+            <h3>Ejercicio 6: Gestor sencillo de partidas de videojuego</h3>
+            <p>
+                El siguiente objeto en JavaScript modela partidas de videojuego (nombre, horas jugadas y dificultad),
+                e incluye métodos para calcular el total de horas jugadas y filtrar partidas por dificultad.
+            </p>
+            <pre id="resultado-ej6"></pre>
+        </section>
+    </main>
+
+    <footer>
+        <p>Creado en Visual Studio Code - <a href="https://code.visualstudio.com/">code.visualstudio.com</a>.</p>
+    </footer>
+    <script src="lab4.js"></script>
+</body>
+</html>
+
