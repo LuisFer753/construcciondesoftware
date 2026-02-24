@@ -1,0 +1,24 @@
+{
+  "name": "construcciondesoftware",
+  "version": "1.0.0",
+  "description": "Labs de tarea",
+  "homepage": "https://github.com/LuisFer753/construcciondesoftware#readme",
+  "bugs": {
+    "url": "https://github.com/LuisFer753/construcciondesoftware/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuisFer753/construcciondesoftware.git"
+  },
+  "license": "ISC",
+  "author": "Luis Fernando Tena Ortega",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "uy": "node --watch app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
