@@ -59,13 +59,13 @@ const path = require("path");
 
 const port = 3000;
 
-// Lee tu HTML (el que pegaste) y lo devuelve al cliente
+// Lee el HTML y lo devuelve al cliente
 const server = http.createServer((request, response) => {
   console.log("Petición recibida:", request.url);
 
-  // Solo vamos a servir una página principal
+  // Solo sirve una página principal
   if (request.url === "/" || request.url === "/lab6") {
-    const rutaHtml = path.join(__dirname, "lab6.html"); // ajusta nombre si es distinto
+    const rutaHtml = path.join(__dirname, "lab6.html");
     fs.readFile(rutaHtml, "utf8", (err, data) => {
       if (err) {
         response.statusCode = 500;
