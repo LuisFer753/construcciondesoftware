@@ -1,69 +1,91 @@
-const express=require('express');
-const path=require('path');
-const fs=require('fs');
-const router=express.Router();
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
 
+const router = express.Router();
 
-router.get('/', (request, response, next)=>{
-    const filepath=path.join(__dirname, '..', 'lab6.html');
-    response.status(200).sendFile(filepath);
+const pedidosFile = path.join(__dirname, '..', 'data', 'pedidos_tiendita.txt');
+
+// Función auxiliar para leer pedidos como arreglo
+function leerPedidos() {
+  if (!fs.existsSync(pedidosFile)) return [];
+  const contenido = fs.readFileSync(pedidosFile, 'utf8');
+  if (!contenido.trim()) return [];
+  return contenido
+    .trim()
+    .split('\n')
+    .map((linea) => {
+      try {
+        return JSON.parse(linea);
+      } catch {
+        return null;
+      }
+    })
+    .filter((p) => p);
+}
+
+// Página principal de la tiendita (antes era tu lab5.html)
+router.get('/', (req, res, next) => {
+  const productos = [
+    { id: 1, nombre: 'Pulparindots', precio: 10, descripcion: 'Dulces enchilosos', max: 10 },
+    { id: 2, nombre: 'Violin peruano', precio: 1499, descripcion: '40 años de uso', max: 2 },
+    { id: 3, nombre: 'Peluche de Dodo Original', precio: 200199, descripcion: 'El mejor amigo', max: 8 }
+  ];
+
+  res.status(200).render('tienda', {
+    titulo: 'Tiendita de Luis',
+    productos: productos
+  });
 });
 
-router.get('/info', (request, response, next)=>{
-    response.status(200).json({nombre: 'La mejor tiendita', iva: '16%', mensaje: 'Las mejores cosas que verás jamás!!'});
+// Info JSON (otra ruta más)
+router.get('/productos', (req, res, next) => {
+  const productos = [
+    { id: 1, nombre: 'Pulparindots', precio: 10 },
+    { id: 2, nombre: 'Violin peruano', precio: 1499 },
+    { id: 3, nombre: 'Peluche de Dodo Original', precio: 200199 }
+  ];
+  res.status(200).json(productos);
 });
 
-router.get('/productos', (request, response, next) => {
-    const productos=[
-        {id: 1, nombre: 'Pulparindots', precio: 10},
-        {id: 2, nombre: 'Violín peruano', precio: 1499},
-        {id: 3, nombre: 'Peluche de Dodo Original', precio: 200199}
-    ];
-    response.status(200).json(roductos);
+// Formulario de checkout
+router.get('/checkout', (req, res, next) => {
+  res.status(200).render('checkout', {
+    titulo: 'Checkout Tiendita'
+  });
 });
 
-router.get('/checkout', (request, response, next) => {
-    const htmlform = `
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-      <meta charset="UTF-8">
-      <title>Checkout Tiendita</title>
-    </head>
-    <body>
-      <h1>Checkout - Tiendita</h1>
-      <form action="/tienda/checkout" method="POST">
-        <label>Nombre del cliente:
-          <input type="text" name="nombre" required>
-        </label>
-        <br>
-        <label>Producto:
-          <select name="producto">
-            <option value="Pulparindots">Pulparindots</option>
-            <option value="Violin peruano">Violin peruano</option>
-            <option value="Peluche de Dodo Original">Peluche de Dodo Original</option>
-          </select>
-        </label>
-        <br>
-        <label>Cantidad:
-          <input type="number" name="cantidad" min="1" max="10" required>
-        </label>
-        <br>
-        <button type="submit">Enviar pedido</button>
-      </form>
-      <p><a href="/tienda">Volver a la tiendita</a></p>
-    </body>
-    </html>`;
-    response.status(200).send(htmlform);
+// Procesar checkout (POST) y guardar en archivo
+router.post('/checkout', (req, res, next) => {
+  const { nombre, producto, cantidad } = req.body;
+
+  const pedido = {
+    nombre: nombre,
+    producto: producto,
+    cantidad: Number(cantidad),
+    fecha: new Date().toISOString()
+  };
+
+  fs.mkdirSync(path.join(__dirname, '..', 'data'), { recursive: true });
+
+  fs.appendFile(pedidosFile, JSON.stringify(pedido) + '\n', (err) => {
+    if (err) {
+      console.error('Error al guardar el pedido:', err);
+      return res.status(500).send('Error del servidor al guardar el pedido.');
+    }
+
+    // Redirigimos a la página de pedidos para "mejorar" la app
+    res.status(302).redirect('/tienda/pedidos');
+  });
 });
 
-router.post('/checkout', (request, response, next) => {
-    const {nombre, producto, cantidad} = request.body;
-    const linea = `Cliente: ${nombre}, Producto: ${producto}, Cantidad: ${cantidad}\n`;
-    const filepath = path.join(__dirname, '..', 'pedidos_tiendita.txt');
-    response.status(201).send(`<h1>Pedido recibido</h1>
-        <p>Gracias, ${nombre}. Guardamos tu pedido de ${cantidad} x ${producto}.</p>
-        <p><a href="/tienda">Volver a la tiendita</a></p>`);
+// Página que muestra los pedidos leídos del archivo
+router.get('/pedidos', (req, res, next) => {
+  const pedidos = leerPedidos();
+  res.status(200).render('pedidos', {
+    titulo: 'Pedidos de la Tiendita',
+    pedidos: pedidos
+  });
 });
 
-module.exports=router;
+module.exports = router;

@@ -1,0 +1,36 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/nav.ejs') %>
+
+<section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
+  <h2 class="text-3xl font-bold text-center mb-8">Checkout Tiendita</h2>
+
+  <form action="/tienda/checkout" method="POST" class="space-y-6 max-w-xl mx-auto">
+    <div>
+      <label class="block mb-2 font-semibold">Nombre del cliente:</label>
+      <input type="text" name="nombre" required
+             class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl">
+    </div>
+
+    <div>
+      <label class="block mb-2 font-semibold">Producto:</label>
+      <select name="producto" class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl">
+        <option value="Pulparindots">Pulparindots</option>
+        <option value="Violin peruano">Violin peruano</option>
+        <option value="Peluche de Dodo Original">Peluche de Dodo Original</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block mb-2 font-semibold">Cantidad:</label>
+      <input type="number" name="cantidad" min="1" max="10" required
+             class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl">
+    </div>
+
+    <button type="submit"
+            class="bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-3 rounded-full font-bold hover:scale-105 transition-all">
+      Enviar pedido
+    </button>
+  </form>
+</section>
+
+<%- include('includes/footer.ejs') %>

@@ -1,0 +1,23 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/nav.ejs') %>
+
+<section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
+  <h2 class="text-3xl font-bold text-center mb-8">Pedidos de la Tiendita</h2>
+
+  <% if (pedidos.length > 0) { %>
+    <ul class="space-y-4">
+      <% for (let p of pedidos) { %>
+        <li class="bg-gray-900/60 border border-gray-700 rounded-2xl p-4">
+          <p><strong>Cliente:</strong> <%= p.nombre %></p>
+          <p><strong>Producto:</strong> <%= p.producto %></p>
+          <p><strong>Cantidad:</strong> <%= p.cantidad %></p>
+          <p class="text-xs opacity-70"><strong>Fecha:</strong> <%= p.fecha %></p>
+        </li>
+      <% } %>
+    </ul>
+  <% } else { %>
+    <h3 class="text-center text-xl opacity-80">Aún no hay pedidos registrados.</h3>
+  <% } %>
+</section>
+
+<%- include('includes/footer.ejs') %>

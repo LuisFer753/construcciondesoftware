@@ -1,17 +1,24 @@
-const express=require('express');
-const path=require('path');
-const router=express.Router();
+const express = require('express');
 
-router.get('/', (request, response, next) => {
-    response.status(302).redirect('/tienda');
+const router = express.Router();
+
+// Home → redirige a la tiendita
+router.get('/', (req, res, next) => {
+  res.status(302).redirect('/tienda');
 });
 
-router.get('/acerca', (request, response, next) => {
-    response.status(200).send('<h1>Acerca de la Tiendita</h1><p>Proyecto con Node y Express.</p>');
+// Acerca de
+router.get('/acerca', (req, res, next) => {
+  res.status(200).render('acerca', {
+    titulo: 'Acerca de la Tiendita'
+  });
 });
 
-router.get('/contacto', (request, resonse, next) => {
-    response.status(200).send('<h1>Contacto</h1><p>Escríbe a: a01708712@tec.mx</p>');
+// Contacto
+router.get('/contacto', (req, res, next) => {
+  res.status(200).render('contacto', {
+    titulo: 'Contacto'
+  });
 });
 
-module.exports=router;
+module.exports = router;
