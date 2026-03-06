@@ -1,24 +1,10 @@
 const express = require('express');
+const pagesController = require('../controllers/paginas.controller');
 
 const router = express.Router();
 
-// Home → redirige a la tiendita
-router.get('/', (req, res, next) => {
-  res.status(302).redirect('/tienda');
-});
-
-// Acerca de
-router.get('/acerca', (req, res, next) => {
-  res.status(200).render('acerca', {
-    titulo: 'Acerca de la Tiendita'
-  });
-});
-
-// Contacto
-router.get('/contacto', (req, res, next) => {
-  res.status(200).render('contacto', {
-    titulo: 'Contacto'
-  });
-});
+router.get('/', pagesController.getHome);
+router.get('/acerca', pagesController.getAcerca);
+router.get('/contacto', pagesController.getContacto);
 
 module.exports = router;

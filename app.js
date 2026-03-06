@@ -18,7 +18,7 @@ const rutasPaginas = require('./routes/paginas.routes');
 app.use('/', rutasPaginas);
 
 app.use((request, response, next)=>{
-    response.status(404).send('<h1>404 - Esta ruta no existe en la tiendita</h1>');
+    response.status(404).render('404', {titulo: 'Página no encontrada', rutaActual: request.url});
 });
 
 app.listen(3000);
