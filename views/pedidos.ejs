@@ -4,6 +4,18 @@
 <section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
   <h2 class="text-3xl font-bold text-center mb-8">Pedidos de la Tiendita</h2>
 
+  <% if (nombreCliente) { %>
+    <p class="text-center mb-4 opacity-80">
+      Último cliente en comprar: <strong><%= nombreCliente %></strong>.
+    </p>
+  <% } %>
+
+  <% if (ultimoPedido) { %>
+    <p class="text-center mb-6 opacity-80">
+      Tu último pedido fue: <%= ultimoPedido.cantidad %> x <%= ultimoPedido.producto %>.
+    </p>
+  <% } %>
+
   <% if (pedidos.length > 0) { %>
     <ul class="space-y-4">
       <% for (let p of pedidos) { %>

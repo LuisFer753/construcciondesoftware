@@ -2,6 +2,19 @@
 <%- include('includes/nav.ejs') %>
 
 <section id="tienda" class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
+
+  <% if (mensaje) { %>
+    <div class="mb-4 p-4 bg-emerald-500/20 border border-emerald-500 rounded-xl text-center">
+      <%= mensaje %>
+    </div>
+  <% } %>
+
+  <% if (nombreCliente) { %>
+    <p class="text-center mb-4 opacity-80">
+      Bienvenido de nuevo, <strong><%= nombreCliente %></strong>.
+    </p>
+  <% } %>
+
   <h2 class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
     🛒 Tiendita
   </h2>
