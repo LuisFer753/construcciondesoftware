@@ -14,10 +14,10 @@
 
     <div>
       <label class="block mb-2 font-semibold">Producto:</label>
-      <select name="producto" class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl">
-        <option value="Pulparindots">Pulparindots</option>
-        <option value="Violin peruano">Violin peruano</option>
-        <option value="Peluche de Dodo Original">Peluche de Dodo Original</option>
+      <select name="producto_id" class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl">
+        <% for (let p of productos) { %>
+          <option value="<%= p.id %>"><%= p.nombre %> ($<%= p.precio %>)</option>
+        <% } %>
       </select>
     </div>
 

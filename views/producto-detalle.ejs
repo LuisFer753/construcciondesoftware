@@ -1,0 +1,14 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/nav.ejs') %>
+
+<section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
+  <h2 class="text-3xl font-bold mb-4"><%= producto.nombre %></h2>
+  <p><strong>Precio:</strong> $<%= producto.precio %> MXN</p>
+  <p><strong>Descripción:</strong> <%= producto.descripcion %></p>
+  <p><strong>Máx. unidades:</strong> <%= producto.max_unidades %></p>
+  <p class="mt-4">
+    <a href="/tienda" class="text-blue-400 underline">Volver a la tienda</a>
+  </p>
+</section>
+
+<%- include('includes/footer.ejs') %>

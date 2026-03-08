@@ -20,9 +20,10 @@
   },
   "dependencies": {
     "body-parser": "^2.2.2",
+    "connect-flash": "^0.1.1",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.18.0",
-    "connect-flash": "^0.1.1"
+    "mysql2": "^3.19.0"
   }
 }

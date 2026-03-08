@@ -1,0 +1,32 @@
+<%- include('includes/head.ejs') %>
+<%- include('includes/nav.ejs') %>
+
+<section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
+  <h2 class="text-3xl font-bold mb-4">Pedido #<%= pedido.id %></h2>
+  <p><strong>Cliente:</strong> <%= pedido.nombre_cliente %></p>
+  <p><strong>Producto:</strong> <%= pedido.nombre_producto %></p>
+  <p><strong>Cantidad actual:</strong> <%= pedido.cantidad %></p>
+  <p><strong>Fecha:</strong> <%= pedido.fecha %></p>
+
+  <hr class="my-6 border-gray-700">
+
+  <h3 class="text-2xl font-bold mb-4">Editar cantidad</h3>
+  <form action="/tienda/pedidos/editar" method="POST" class="space-y-4 max-w-sm">
+    <input type="hidden" name="pedido_id" value="<%= pedido.id %>">
+    <div>
+      <label class="block mb-2 font-semibold">Nueva cantidad:</label>
+      <input type="number" name="nueva_cantidad" min="1" max="99" required
+             class="w-full p-3 bg-gray-900 border border-gray-600 rounded-xl">
+    </div>
+    <button type="submit"
+            class="bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-2 rounded-full font-bold hover:scale-105 transition-all">
+      Guardar cambios
+    </button>
+  </form>
+
+  <p class="mt-6">
+    <a href="/tienda/pedidos" class="text-blue-400 underline">Volver a todos los pedidos</a>
+  </p>
+</section>
+
+<%- include('includes/footer.ejs') %>
