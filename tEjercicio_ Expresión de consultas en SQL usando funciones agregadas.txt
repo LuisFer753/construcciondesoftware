@@ -1,0 +1,27 @@
+select Nombre, sum(Sueldo) as 'Total de ingresos'
+from Elenco
+group by Nombre
+order by sum(Sueldo) desc;
+
+select nomestudio, sum(presupuesto) as 'presupuesto destinado'
+from Pelicula
+where año between 1980 and 1990
+group by nomestudio
+order by sum(presupuesto) desc;
+
+select nombre, sexo, avg(sueldo) as 'sueldo promedio'
+from Actor, Elenco
+where Actor.nombre = Elenco.nombre
+and sexo = 'masculino'
+group by nombre
+having avg(sueldo) >= 5000000
+order by avg(sueldo) desc;
+
+select titulo, año, min(presupuesto) as presupuesto
+from Pelicula
+group by titulo;
+
+select max(sueldo) as sueldo
+from Elenco, Actor
+where elenco.nombre = actor.nombre
+and sexo = 'Femenino';

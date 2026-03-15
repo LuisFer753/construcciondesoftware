@@ -1,0 +1,46 @@
+select nombre
+from elenco, pelicula
+where elenco.titulo = pelicula.titulo and elenco.año = pelicula.año
+and nomestudio = 'MGM' 
+and año = 1995
+
+select nombre 
+from elenco
+where titulo in (select titulo from pelicula where año = 1995 and nomestudio = 'MGM')
+
+
+--no se puede sin subconsulta
+
+select titulo
+from pelicula
+where duración > (select duración from pelicula where titulo = 'Lo que el viento se llevó' and año = 1939)
+
+
+--no se puede sin subconsultas
+
+select p.nombre, count(idproductor), as numpelicula
+from productor p, pelicula pel
+where p.idproductor = pel.idproductor
+and numpelicula > (select count(iproductor) as numpeliculas from productor prod, pelicula where p.idproductor = pelcula.idproductor and p.nombre = 'George Lucas')
+group by p.nombre
+
+
+select nombre
+from productor, pelicula, elenco
+where productor.idproductor = pelicula.idproductor and pelicula.titulo = elenco.titulo and pelicula.año = elenco.año
+and elenco.nombre = 'Sharon Stone'
+
+select nombre
+from productor, pelicula
+where productor.idproductor = pelicula.idproductor
+and titulo in (select titulo from elenco where nombre = 'Sharon Stone')
+
+
+select titulo
+from pelicula
+group by titulo
+having count (*) > 1
+
+select titulo
+from pelicula
+where titulo in (select titulo from pelicula group by titulo, having count (*) > 1)
