@@ -5,6 +5,7 @@
   <h2 class="text-3xl font-bold text-center mb-8">Checkout Tiendita</h2>
 
   <form action="/tienda/checkout" method="POST" class="space-y-6 max-w-xl mx-auto">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div>
       <label class="block mb-2 font-semibold">Nombre del cliente:</label>
       <input type="text" name="nombre" required
