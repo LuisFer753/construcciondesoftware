@@ -1,0 +1,166 @@
+/*
+Materiales(Clave, Descripción, Costo)
+Proveedores(RFC, RazonSocial)
+Proyectos(Numero,Denominacion)
+Entregan(Clave, RFC, Numero, Fecha, Cantidad) 
+*/
+
+select * from materiales,entregan
+where materiales.clave = entregan.clave
+-- Unicamente salen los materiales entregados porque se exige que cada uno tenga una clave coincidente con la tabla entregan
+
+(select * from entregan where clave = 1450)
+union
+(select * from entregan where clave = 1300);
+-- una consulta equivalente sin union seria:
+select *
+from emtregan
+where clave = 1450 or clave = 1300;
+
+/*
+(select * from entregan)
+minus
+(select * from entregan where clave=1000)
+*/
+-- una consulta equivalente sin minus seria:
+select * 
+from entregan
+where clave <> 1000;
+
+set dateormat dmy;
+select m.descripcion
+from entregan e
+where m.clave = e.clave
+and e.fecha >= '01/01/2000'
+and e.fecha < '01/01/2001';
+-- Algunas descripciones aparecen varias veces porque un mismo material puede haberse entregado varias veces
+select distinct m.descripcion
+from entregan e
+where m.clave = e.clave
+and e.fecha >= '01/01/2000'
+and e.fecha < '01/01/2001';
+-- Ahora cada material aparece solo una vez, ya que distinct elimina filas duplicadas del resultado
+
+select p.numero, p.denominacion, e.fecha, e.cantidad
+from proyectos p
+where e.numero = p.numero
+order by p.numero asc, e.fecha desc;
+
+select * 
+from productos
+where descripcion like 'Si%';
+-- Salen todas las filas donde la descripción empieza por “Si” y luego puede haber cero o más caracteres
+-- El símbolo % es un comodín que representa “cero o más caracteres de cualquier tipo”
+-- Si la consulta fuera LIKE 'Si' sin %, solo encontraría descripciones exactamente iguales a “Si”, sin ningún carácter adicional
+-- Por eso LIKE 'Si' devolverá nada o muy pocas filas, mientras que LIKE 'Si%' devuelve todas las cadenas que empiezan con “Si”
+
+/*
+DECLARE @foo varchar(40);
+DECLARE @bar varchar(40);
+SET @foo = '¿Que resultado';
+SET @bar = ' ¿¿¿??? ';
+SET @foo += ' obtienes?';
+PRINT @foo + @bar;
+*/
+-- Resultado: ¿Que resultado obtienes? ¿¿¿???
+​-- DECLARE sirve para declarar variables (tipo y nombre)
+​-- @foo es una variable de tipo varchar(40) que almacena la primera cadena, luego se le agrega “ obtienes?”
+​-- SET asigna valor a una variable o actualiza su valor; SET @foo += '...' es un operador compuesto “suma igual de cadenas” (concatena)
+
+SELECT RFC FROM Entregan WHERE RFC LIKE '[A-D]%';
+--  [A-D] indica un rango o conjunto de caracteres validos, seguidos de cero o mas caracteres cualesquiera, devolviendo un RFC que empiece con A, B, C o D
+SELECT RFC FROM Entregan WHERE RFC LIKE '[^A]%';
+-- [^A] Indica que haya cualquier caracter excepto el que se indica, seguido de cero o mas caracteres cualesquiera, devolviendo un RFC que no empiece con A
+SELECT Numero FROM Entregan WHERE Numero LIKE '___6';
+-- _ _ _ 6 Indica un caracter cualquiera por cada guion bajo, cumpliendo con cualquiera que se especifique, aqui devuelve cualquier numero de 4 digitos que termine en 6, ej: 1006
+
+SELECT Clave,RFC,Numero,Fecha,Cantidad
+FROM Entregan
+WHERE Numero BETWEEN 5000 AND 5010
+-- para definir un rango de fecha se agrega:
+and fecha between '01/01/2000' and '31/12/2000';
+
+SELECT RFC,Cantidad, Fecha,Numero
+FROM Entregan
+WHERE Numero Between 5000 and 5010 AND
+Exists ( SELECT RFC FROM Proveedores WHERE RazonSocial LIKE 'La%' and Entregan.RFC = Proveedores.RFC )
+-- Devuelve entregas con número entre 5000 y 5010 cuyo proveedor tiene razón social que empieza por “La”
+-- ​El paréntesis después de EXISTS contiene la subconsulta; EXISTS solo comprueba si esa subconsulta devuelve al menos una fila (verdadero o falso)
+-- Equivalente con in:
+SELECT RFC, Cantidad, Fecha, Numero
+FROM Entregan
+WHERE Numero Between 5000 and 5010
+AND RFC IN (SELECT RFC FROM Proveedores WHERE RazonSocial LIKE 'La%');
+-- Equivalente con not in:
+SELECT RFC, Cantidad, Fecha, Numero
+FROM Entregan
+WHERE Numero Between 5000 and 5010
+AND RFC NOT IN (SELECT RFC FROM Proveedores WHERE RazonSocial LIKE 'La%');
+
+SELECT TOP 2 * FROM Proyectos;
+-- Devuelve solo las 2 primeras filas del resultado
+
+ALTER TABLE materiales 
+ADD PorcentajeImpuesto NUMERIC(6,2);
+UPDATE materiales 
+SET PorcentajeImpuesto = 2 * clave / 1000;
+-- Una consulta para obtener importe por entrega, considerando costo + impuesto:
+select e.clave, e.numero, e.cantidad, m.costo, m.PorcentajeImpuesto, e.cantidad * m.costo * (1 + m.PorcentajeImpuesto / 100.0) as ImporteTotal
+from entregan e
+where m.clave = e.clave;
+
+select distinct m.clave, m.descripcion
+from materiales m
+where e.clave = m.clave and p.numero = e.numero
+and p.denominacion = 'México sin ti no estamos completos';
+
+select distinct m.clave, m.descripcion
+from materiales m
+where e.clave = m.clave and p.RFC = e.RFC
+and p.RazonSocial = 'Acme tools';
+
+select e.RFC
+from entregan e
+where e.fecha between '01/01/2000' and '01/01/2001'
+group by e.RFC
+having avg(e.cantidad) >= 300;
+
+select e.clave, sum(e.cantidad) as TotalCantidad2000
+from entregan e
+where e.fecha between '01/01/2000' and '01/01/2001'
+group by e.clave;
+
+create view vTotales2001 as select e.clave, sum(e.cantidad) as Total2001
+from entregan e
+where e.fecha between '01/01/2001' and '01/01/2002'
+group by e.clave;
+
+select *
+from productos
+where nombre like '%ub%';
+
+select p.denominacion, sum(e.cantidad * m.costo) as TotalPagar
+from proyectos p
+where e.numero = p.numero and m.clave = e.clave
+group by p.denominacion;
+
+create view vTelevisa as select distinct e.RFC
+from entregan e
+where p.numero = e.numero
+and p.denominacion = 'Televisa en acción';
+create view vEducando as select distinct e.RFC
+from entregan e
+where p.numero = e.numero
+and p.denominacion = 'Educando en Coahuila';
+
+select distinct p.denominacion, e.RFC, prov.RazonSocial
+from entregan e
+where p.numero = e.numero and prov.RFC = e.RFC
+and p.denominacion = 'Televisa en acción'
+and e.RFC not in (select e2.RFC from entregan e2 where p2.numero = e2.numero and p2.denominacion = 'Educando en Coahuila');
+
+select distinct m.costo, m.clave, m.descripcion
+from entregan e
+where m.clave = e.clave and p.numero = e.numero
+and p.denominacion = 'Televisa en acción'
+and e.RFC in (select e2.RFC from entregan e2 where p2.numero = e2.numero and p2.denominacion = 'Educando en Coahuila');
