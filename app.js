@@ -32,6 +32,8 @@ app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.usuarioActual = req.session.user || null;
+  res.locals.roles = req.session.roles || [];
+  res.locals.permisos = req.session.permisos || [];
   next();
 });
 

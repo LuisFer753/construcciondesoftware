@@ -1,29 +1,28 @@
 const express = require('express');
 const tiendaController = require('../controllers/tienda.controller');
 const isAuth = require('../is-auth');
+const hasPermiso = require('../has-permiso');
 
 const router = express.Router();
 
-// /tienda
-router.get('/', tiendaController.getTienda);
+// /tienda → ver tienda (necesita ver_tienda)
+router.get('/', isAuth, hasPermiso(['ver_tienda']), tiendaController.getTienda);
 
-// /tienda/productos (JSON)
+// JSON de productos (podría ser público o protegido)
 router.get('/productos', tiendaController.getProductosJson);
-
-// /tienda/productos/:producto_id (detalle de producto - 1 registro)
 router.get('/productos/:producto_id', tiendaController.getProducto);
 
-// /tienda/checkout
-router.get('/checkout', isAuth, tiendaController.getCheckout);
-router.post('/checkout', isAuth, tiendaController.postCheckout);
+// Checkout y creación de pedido
+router.get('/checkout', isAuth, hasPermiso(['hace_pedido']), tiendaController.getCheckout);
+router.post('/checkout', isAuth, hasPermiso(['hace_pedido']), tiendaController.postCheckout);
 
-// /tienda/pedidos (lista)
-router.get('/pedidos', isAuth, tiendaController.getPedidos);
+// Ver pedidos (lista)
+router.get('/pedidos', isAuth, hasPermiso(['ver_pedidos']), tiendaController.getPedidos);
 
-// /tienda/pedidos/:pedido_id (detalle de 1 pedido)
-router.get('/pedidos/:pedido_id', isAuth, tiendaController.getPedido);
+// Ver un pedido concreto
+router.get('/pedidos/:pedido_id', isAuth, hasPermiso(['ver_pedidos']), tiendaController.getPedido);
 
-// /tienda/pedidos/editar (POST para update cantidad)
-router.post('/pedidos/editar', isAuth, tiendaController.postEditarPedido);
+// Editar pedido (solo admin u otro rol con editar_pedido)
+router.post('/pedidos/editar', isAuth, hasPermiso(['editar_pedido']), tiendaController.postEditarPedido);
 
 module.exports = router;
