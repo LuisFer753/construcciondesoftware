@@ -9,6 +9,14 @@ module.exports = class Pedido {
     this.fecha = new Date();
   }
 
+  // Usando stored procedure
+  saveWithSP() {
+    return db.execute(
+      'CALL sp_crear_pedido(?, ?, ?)',
+      [this.nombre_cliente, this.producto_id, this.cantidad]
+    );
+  }
+
   // Inserción de un registro
   save() {
     return db.execute(
@@ -29,22 +37,11 @@ module.exports = class Pedido {
   }
 
   // Un solo registro por id
-  static fetchById(id) {
-    return db.execute(
-      `SELECT p.id, p.nombre_cliente, p.cantidad, p.fecha,
-              prod.id AS producto_id, prod.nombre AS nombre_producto
-       FROM pedidos p
-       JOIN productos prod ON p.producto_id = prod.id
-       WHERE p.id = ?`,
-      [id]
-    );
-  }
+  static fetchByIdWithSP(id) {
+    return db.execute('CALL sp_detalle_pedido(?)', [id]);
+}
 
   // Edición de un registro: actualizar cantidad
-  static updateCantidad(id, nuevaCantidad) {
-    return db.execute(
-      'UPDATE pedidos SET cantidad = ? WHERE id = ?',
-      [nuevaCantidad, id]
-    );
-  }
+  static updateCantidadWithSP(id, nuevaCantidad) {
+    return db.execute('CALL sp_actualizar_cantidad_pedido(?, ?)', [id, nuevaCantidad])}
 };

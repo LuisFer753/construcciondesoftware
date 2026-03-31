@@ -78,7 +78,8 @@ exports.postCheckout = (req, res, next) => {
   const { nombre, producto_id, cantidad } = req.body;
 
   const pedido = new Pedido(nombre, producto_id, cantidad);
-  pedido.save().then(() => {
+  //pedido.save().then(() => {
+  pedido.saveWithSP().then(() => {
       req.session.nombreCliente = nombre;
 
       res.setHeader(
@@ -114,14 +115,17 @@ exports.getPedidos = (req, res, next) => {
 exports.getPedido = (req, res, next) => {
   const pedidoId = req.params.pedido_id;
 
-  Pedido.fetchById(pedidoId).then(([rows]) => {
-      if (rows.length === 0) {
+  Pedido.fetchByIdWithSP(pedidoId)
+    .then(([rows]) => {
+      // Cuando llamas CALL, mysql2 te regresa rows[0] como el resultado real
+      const resultRows = rows[0] || rows; 
+      if (resultRows.length === 0) {
         return res.status(404).render('404', {
           titulo: 'Pedido no encontrado',
           rutaActual: req.url
         });
       }
-      const pedido = rows[0];
+      const pedido = resultRows[0];
       res.render('pedido-detalle', {
         titulo: `Pedido #${pedido.id}`,
         pedido: pedido
@@ -135,11 +139,16 @@ exports.postEditarPedido = (req, res, next) => {
   const pedidoId = req.body.pedido_id;
   const nuevaCantidad = req.body.nueva_cantidad;
 
-  Pedido.updateCantidad(pedidoId, nuevaCantidad).then(() => {
+  Pedido.updateCantidadWithSP(pedidoId, nuevaCantidad)
+    .then(() => {
       req.flash('info', 'Cantidad actualizada correctamente');
       res.redirect('/tienda/pedidos/' + pedidoId);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      req.flash('info', 'No se pudo actualizar la cantidad (verifica el valor).');
+      res.redirect('/tienda/pedidos/' + pedidoId);
+    });
 };
 
 // Mostrar formulario para administrar productos (incluye imagen)
