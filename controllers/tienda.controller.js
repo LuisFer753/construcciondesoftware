@@ -141,3 +141,51 @@ exports.postEditarPedido = (req, res, next) => {
     })
     .catch(err => console.log(err));
 };
+
+// Mostrar formulario para administrar productos (incluye imagen)
+exports.getAdminProductos = (req, res, next) => {
+  Producto.fetchAll()
+    .then(([rows]) => {
+      res.render('admin-productos', {
+        titulo: 'Administrar productos',
+        productos: rows
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+// Procesar edición/imagen de producto
+exports.postAdminProducto = (req, res, next) => {
+  const { id, nombre, precio, descripcion, max_unidades, imagen_actual } = req.body;
+  const file = req.file; // multer deja aquí el archivo
+
+  let rutaImagen = imagen_actual; // valor por defecto: lo que ya tenía
+
+  if (file) {
+    // Si se subió nueva imagen, usamos la nueva ruta
+    rutaImagen = '/' + file.path.replace(/\\/g, '/');
+  }
+
+  Producto.fetchById(id)
+    .then(([rows]) => {
+      if (rows.length === 0) {
+        return res.redirect('/tienda/admin/productos');
+      }
+
+      const prodRow = rows[0];
+      const producto = new Producto(
+        nombre,
+        precio,
+        descripcion,
+        max_unidades,
+        rutaImagen,
+        prodRow.id
+      );
+
+      return producto.update();
+    })
+    .then(() => {
+      res.redirect('/tienda/admin/productos');
+    })
+    .catch(err => console.log(err));
+};

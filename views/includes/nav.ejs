@@ -1,10 +1,15 @@
 <nav class="flex justify-center space-x-8">
-  <% if (permisos.includes('ver_tienda')) { %>
-    <a href="/tienda" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Tienda</a>
-  <% } %>
+  <a href="/tienda" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Tienda</a>
 
   <% if (permisos.includes('ver_pedidos')) { %>
     <a href="/tienda/pedidos" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Pedidos</a>
+  <% } %>
+
+  <% if (permisos.includes('editar_pedido')) { %>
+    <a href="/tienda/admin/productos"
+       class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">
+      Admin productos
+    </a>
   <% } %>
 
   <a href="/acerca" class="hover:text-blue-400 transition-all duration-300 text-lg font-semibold">Acerca</a>

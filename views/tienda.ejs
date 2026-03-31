@@ -2,18 +2,7 @@
 <%- include('includes/nav.ejs') %>
 
 <section id="tienda" class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
-
-  <% if (mensaje) { %>
-    <div class="mb-4 p-4 bg-emerald-500/20 border border-emerald-500 rounded-xl text-center">
-      <%= mensaje %>
-    </div>
-  <% } %>
-
-  <% if (nombreCliente) { %>
-    <p class="text-center mb-4 opacity-80">
-      Bienvenido de nuevo, <strong><%= nombreCliente %></strong>.
-    </p>
-  <% } %>
+  <!-- mensaje / nombreCliente si ya los tienes -->
 
   <h2 class="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
     🛒 Tiendita
@@ -23,10 +12,14 @@
   <div class="grid md:grid-cols-3 gap-8 mb-12">
     <% for (let producto of productos) { %>
       <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-8 rounded-2xl hover:scale-105 transition-all duration-300 border border-gray-700">
+        <% if (producto.imagen) { %>
+          <img src="<%= producto.imagen %>" alt="<%= producto.nombre %>"
+               class="w-full h-40 object-cover rounded-xl mb-4">
+        <% } %>
         <h3 class="text-2xl font-bold mb-2"><%= producto.nombre %></h3>
         <p class="text-green-400 text-xl mb-4 font-bold">$<%= producto.precio %> MXN</p>
         <p class="text-sm opacity-80 mb-4"><%= producto.descripcion %></p>
-        <p class="text-sm opacity-80 mb-4">Máx: <%= producto.max %> unidades</p>
+        <p class="text-sm opacity-80 mb-4">Máx: <%= producto.max_unidades %> unidades</p>
       </div>
     <% } %>
   </div>

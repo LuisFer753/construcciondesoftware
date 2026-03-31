@@ -25,4 +25,8 @@ router.get('/pedidos/:pedido_id', isAuth, hasPermiso(['ver_pedidos']), tiendaCon
 // Editar pedido (solo admin u otro rol con editar_pedido)
 router.post('/pedidos/editar', isAuth, hasPermiso(['editar_pedido']), tiendaController.postEditarPedido);
 
+// Admin: editar producto (form + POST)
+router.get('/admin/productos', isAuth, hasPermiso(['editar_pedido']), tiendaController.getAdminProductos);
+router.post('/admin/productos', isAuth, hasPermiso(['editar_pedido']), tiendaController.postAdminProducto);
+
 module.exports = router;

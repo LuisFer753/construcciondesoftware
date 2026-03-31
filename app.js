@@ -4,6 +4,7 @@ const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
 const csrf = require('csurf');
+const multer = require('multer');
 
 const app = express();
 
@@ -11,7 +12,34 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+// 2) multer (después de bodyParser)
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads');  // carpeta donde se subirán las imágenes
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('imagen')); 
+// 'imagen' será el name del input file
+
+// 3) estáticos
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 1) Sesión
 app.use(session({
