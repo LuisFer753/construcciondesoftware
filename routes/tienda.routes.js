@@ -29,4 +29,7 @@ router.post('/pedidos/editar', isAuth, hasPermiso(['editar_pedido']), tiendaCont
 router.get('/admin/productos', isAuth, hasPermiso(['editar_pedido']), tiendaController.getAdminProductos);
 router.post('/admin/productos', isAuth, hasPermiso(['editar_pedido']), tiendaController.postAdminProducto);
 
+// AJAX: obtener detalle de pedido en JSON
+router.post('/pedidos/detalle-json', isAuth, hasPermiso(['ver_pedidos']), tiendaController.postDetallePedidoAjax);
+
 module.exports = router;

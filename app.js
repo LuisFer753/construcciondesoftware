@@ -11,7 +11,10 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+// Parseo de JSON para peticiones AJAX
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // 2) multer (después de bodyParser)
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {

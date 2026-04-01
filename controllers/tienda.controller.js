@@ -166,12 +166,11 @@ exports.getAdminProductos = (req, res, next) => {
 // Procesar edición/imagen de producto
 exports.postAdminProducto = (req, res, next) => {
   const { id, nombre, precio, descripcion, max_unidades, imagen_actual } = req.body;
-  const file = req.file; // multer deja aquí el archivo
+  const file = req.file;
 
-  let rutaImagen = imagen_actual; // valor por defecto: lo que ya tenía
+  let rutaImagen = imagen_actual; // valor por defecto
 
   if (file) {
-    // Si se subió nueva imagen, usamos la nueva ruta
     rutaImagen = '/' + file.path.replace(/\\/g, '/');
   }
 
@@ -197,4 +196,34 @@ exports.postAdminProducto = (req, res, next) => {
       res.redirect('/tienda/admin/productos');
     })
     .catch(err => console.log(err));
+};
+
+exports.postDetallePedidoAjax = (req, res, next) => {
+  const pedidoId = req.body.pedido_id;
+
+  if (!pedidoId) {
+    return res.status(400).json({ error: 'Falta pedido_id' });
+  }
+
+  Pedido.fetchByIdWithSP(pedidoId)
+    .then(([rows]) => {
+      const resultRows = rows[0] || rows; // igual que en getPedido
+
+      if (!resultRows || resultRows.length === 0) {
+        return res.status(404).json({ error: 'Pedido no encontrado' });
+      }
+
+      const pedido = resultRows[0];
+      res.status(200).json({
+        id: pedido.id,
+        nombre_cliente: pedido.nombre_cliente,
+        producto_id: pedido.producto_id,
+        cantidad: pedido.cantidad,
+        fecha: pedido.fecha
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: 'Error en el servidor' });
+    });
 };
