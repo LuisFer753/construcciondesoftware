@@ -76,10 +76,10 @@ exports.getCheckout = (req, res, next) => {
 // POST checkout (inserción de pedido)
 exports.postCheckout = (req, res, next) => {
   const { nombre, producto_id, cantidad } = req.body;
+  const cantidadNum = parseInt(cantidad, 10) || 0;
 
-  const pedido = new Pedido(nombre, producto_id, cantidad);
-  //pedido.save().then(() => {
-  pedido.saveWithSP().then(() => {
+  Pedido.crearConSPTransaccional(nombre, producto_id, cantidadNum)
+    .then(() => {
       req.session.nombreCliente = nombre;
 
       res.setHeader(
@@ -88,11 +88,15 @@ exports.postCheckout = (req, res, next) => {
       );
 
       req.flash('info', `Gracias por tu pedido, ${nombre}!`);
-      req.session.ultimoPedido = { producto_id, cantidad };
+      req.session.ultimoPedido = { producto_id, cantidad: cantidadNum };
 
       res.redirect('/tienda/pedidos');
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.error('Error en SP transaccional:', err.message);
+      req.flash('info', 'No se pudo completar el pedido (stock insuficiente o error).');
+      res.redirect('/tienda/checkout');
+    });
 };
 
 // Lista de pedidos (varios registros)
