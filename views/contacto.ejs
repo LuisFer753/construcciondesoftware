@@ -1,9 +1,29 @@
 <%- include('includes/head.ejs') %>
 <%- include('includes/nav.ejs') %>
 
-<section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl">
-  <h2 class="text-3xl font-bold mb-4">Contacto</h2>
-  <p>Puedes escribirme a: <strong>a01708712@tec.mx</strong></p>
+<section class="bg-white/10 backdrop-blur-md rounded-3xl p-12 mb-20 shadow-2xl max-w-4xl mx-auto">
+  <h2 class="text-3xl font-bold mb-6 text-center">Contacto</h2>
+
+  <p class="mb-6 text-center opacity-80">
+    Puedes visitar nuestra Tiendita física en la siguiente ubicación:
+  </p>
+
+  <div class="w-full h-96 rounded-2xl overflow-hidden shadow-xl">
+    <!-- Servicio externo: Google Maps Embed API -->
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3667.281156245201!2d-106.42491902468092!3d23.19642217905226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x869f53bf33121c07%3A0xea9e650b27f534b5!2zTWFyw6ll!5e0!3m2!1ses-419!2smx!4v1776527828297!5m2!1ses-419!2smx" 
+      width="600" 
+      height="450" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+
+  <p class="mt-4 text-xs opacity-60 text-center">
+    Servicio web externo: mapa cargado mediante Google Maps (Maps Embed API).
+  </p>
 </section>
 
 <%- include('includes/footer.ejs') %>
