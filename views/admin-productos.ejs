@@ -66,6 +66,11 @@
       <% } %>
     </div>
   <% } %>
+  <p class="mt-6 text-xs opacity-60">
+    Triggers en BD: 
+    1) Al crear un pedido se actualiza automáticamente el total de pedidos por producto. 
+    2) Al cambiar la cantidad de un pedido se registra el cambio en una tabla de bitácora.
+  </p>
 </section>
 
 <%- include('includes/footer.ejs') %>
